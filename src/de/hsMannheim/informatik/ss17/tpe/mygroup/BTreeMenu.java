@@ -6,7 +6,7 @@ public class BTreeMenu {
 	public static void main(String[] args) {
 		printMenu();
 	}
-	
+	//Menü
 	private static void printMenu() {
 		println("1\t-> insert(Integer o)");
 		println("2\t-> insert(String filename)");
