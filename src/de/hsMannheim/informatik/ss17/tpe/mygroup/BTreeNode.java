@@ -10,7 +10,7 @@ public class BTreeNode {
 	
 	public BTreeNode(int m) {
 		values = new Integer[m*2+1];
-		childran = new BTreeNode[m*2+1];
+		childran = new BTreeNode[m*2+2];
 	}
 	
 	public Integer getValue(int pos) {
@@ -43,5 +43,9 @@ public class BTreeNode {
 		}
 		
 		childran[pos] = node;
+	}
+	
+	public int getValuesCount() {
+		return values.length;
 	}
 }

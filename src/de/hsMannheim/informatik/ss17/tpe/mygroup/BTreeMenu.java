@@ -4,7 +4,13 @@ import static gdi.MakeItSimple.*;
 
 public class BTreeMenu {
 	public static void main(String[] args) {
-		printMenu();
+		MyBTree tree = new MyBTree(2);
+		
+		tree.insert(5);
+		tree.insert(4);
+		tree.insert(7);
+		tree.insert(8);
+		tree.insert(1);
 	}
 	//Menü
 	private static void printMenu() {
