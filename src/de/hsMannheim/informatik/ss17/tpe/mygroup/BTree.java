@@ -3,7 +3,7 @@ package de.hsMannheim.informatik.ss17.tpe.mygroup;
 public interface BTree {
 	public abstract boolean insert(Integer o);
 	
-	public abstract String insert(String filename);
+	public abstract boolean insert(String filename);
 	
 	public abstract boolean contains(Integer o);
 	

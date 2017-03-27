@@ -6,11 +6,11 @@ public class BTreeNode {
 	
 	private Integer[] values;
 	
-	private BTreeNode[] childran;
+	private BTreeNode[] children;
 	
 	public BTreeNode(int m) {
 		values = new Integer[m*2+1];
-		childran = new BTreeNode[m*2+2];
+		children = new BTreeNode[m*2+2];
 	}
 	
 	public Integer getValue(int pos) {
@@ -21,12 +21,12 @@ public class BTreeNode {
 		return values[pos];
 	}
 	
-	public BTreeNode getChildran(int pos) {
-		if(pos < 0 || pos > childran.length - 1) {
+	public BTreeNode getchildren(int pos) {
+		if(pos < 0 || pos > children.length - 1) {
 			throw new GDIException("pos out of range");
 		}
 		
-		return childran[pos];
+		return children[pos];
 	}
 	
 	public void setValue(int pos, Integer value) {
@@ -37,12 +37,12 @@ public class BTreeNode {
 		values[pos] = value;
 	}
 	
-	public void setChildran(int pos, BTreeNode node) {
-		if(pos < 0 || pos > childran.length - 1) {
+	public void setchildren(int pos, BTreeNode node) {
+		if(pos < 0 || pos > children.length - 1) {
 			throw new GDIException("pos out of range");
 		}
 		
-		childran[pos] = node;
+		children[pos] = node;
 	}
 	
 	public int getValuesCount() {

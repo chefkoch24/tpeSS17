@@ -1,5 +1,7 @@
 package de.hsMannheim.informatik.ss17.tpe.mygroup;
 
+import static gdi.MakeItSimple.*;
+
 public class MyBTree implements BTree {
 
 	private final int m;
@@ -23,13 +25,13 @@ public class MyBTree implements BTree {
 	private boolean insertRecursive(Integer o, BTreeNode node) {
 		for (int i = 0; i < node.getValuesCount(); ++i) {
 			if (node.getValue(i) == null || node.getValue(i).compareTo(o) > 0) {
-				if (node.getChildran(i) == null) {
+				if (node.getchildren(i) == null) {
 					// we can just add it to the node
 					insertToNode(o, node, i);
 					return true;
 				} else {
 					// there is an deeper node
-					return insertRecursive(o, node.getChildran(i));
+					return insertRecursive(o, node.getchildren(i));
 				}
 			} else if (node.getValue(i).equals(o)) {
 				// the same object is already in the tree
@@ -59,15 +61,56 @@ public class MyBTree implements BTree {
 	}
 
 	@Override
-	public String insert(String filename) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean insert(String filename) {
+		// check if the file exist if not there is nothing to insert
+		if (!isFilePresent(filename)) {
+			// file not exist
+			return false;
+		} else {
+			Object file = openInputFile(filename);
+			// insert all integer from the file in the current tree
+			while (isEndOfInputFile(file) == false) {
+				int value = readInt(file);
+				insert(value);
+			}
+			return true;
+		}
 	}
 
+	// Sonderfall falls es die Wurzel ist fehlt noch 
 	@Override
 	public boolean contains(Integer o) {
-		// TODO Auto-generated method stub
+		BTreeNode temp = root;
+		// while the temp Node is not null is it possible that the Integer is in the tree
+		while (temp != null) {
+			// Initialize with 0 in every loop, because we have to search from the first to the last object in one node 
+			int posCounter = 0;
+			// get the right element at the first position
+			if (temp.getValue(posCounter).intValue() == o.intValue()) {
+				return true;
+				// search in the left child of the object because our value is smaller than the current value
+			} else if (temp.getValue(posCounter).intValue() > o.intValue()) {
+				temp = temp.getchildren(posCounter);
+			} else {
+				// search in the same node further because our value is bigger than the current value in the node
+				while (posCounter < 2*m) {
+					posCounter++;
+					// find it
+					if (temp.getValue(posCounter).intValue() == o.intValue()) {
+						return true;
+						// search in the left child because our value is smaller than the current value
+					} else if (temp.getValue(posCounter).intValue() > o.intValue()) {
+						temp = temp.getchildren(posCounter);
+					}
+				}
+				// value is bigger than all elements in the node we need the right child
+				if (posCounter == 2*m) {
+					temp = temp.getchildren(posCounter);
+				}
+			}
+		}
 		return false;
+
 	}
 
 	@Override
@@ -78,8 +121,15 @@ public class MyBTree implements BTree {
 
 	@Override
 	public int height() {
-		// TODO Auto-generated method stub
-		return 0;
+		return height(root);
+	}
+	
+	private int height(BTreeNode node){
+		if (node == null)
+			return 0;
+		else {
+			return 1 + height(node.getchildren(0));
+		}
 	}
 
 	@Override
@@ -123,6 +173,7 @@ public class MyBTree implements BTree {
 		// TODO Auto-generated method stub
 
 	}
+	
 
 	@Override
 	public void printLevelorder() {
