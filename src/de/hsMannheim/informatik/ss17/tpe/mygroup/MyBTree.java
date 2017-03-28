@@ -28,6 +28,11 @@ public class MyBTree implements BTree {
 				if (node.getchildren(i) == null) {
 					// we can just add it to the node
 					insertToNode(o, node, i);
+
+					if (node.getValue(node.getValuesCount() - 1) != null) {
+						split(node);
+					}
+
 					return true;
 				} else {
 					// there is an deeper node
@@ -38,8 +43,8 @@ public class MyBTree implements BTree {
 				return false;
 			}
 		}
-		// this will never happen :/
-		return false;
+
+		throw new GDIException("The node is full, there is someting wrong in the logic of the program");
 	}
 
 	private void insertToNode(Integer o, BTreeNode node, int pos) {
@@ -51,12 +56,44 @@ public class MyBTree implements BTree {
 			// jump to the second last position and move all values than bigger
 			// as our object one to the right to make space for the new object
 			for (int i = node.getValuesCount() - 2; i >= pos; --i) {
-				if (node.getValue(i) != null) {
-					node.setValue(i + 1, node.getValue(i));
+				node.setValue(i + 1, node.getValue(i));
+				node.setchildren(i + 2, node.getchildren(i + 1));
+				
+				if(i == 0) {
+					// the first children has to be moved manually
+					node.setchildren(1, node.getchildren(1));
 				}
 			}
 			// set the object to the right position
 			node.setValue(pos, o);
+		}
+	}
+
+	private void split(BTreeNode node) {
+		if(node == root) {
+			BTreeNode newRoot = new BTreeNode(m);
+			BTreeNode leftNode = new BTreeNode(m);
+			BTreeNode rightNode = new BTreeNode(m);
+			
+			// add the object in the middle to the new root
+			newRoot.setValue(0, root.getValue(m));
+		
+			newRoot.setchildren(0, leftNode);
+			newRoot.setchildren(1, rightNode);
+		
+			// split the objects from the root into two new nodes
+			for(int i = 0; i < m; ++i) {
+				leftNode.setValue(i, root.getValue(i));
+				leftNode.setchildren(i, root.getchildren(i));
+				rightNode.setValue(i, root.getValue(m+1+i));
+				rightNode.setchildren(i, root.getchildren(m+2+i));
+			}
+			
+			// the children m and m+1 are between the object for the new root
+			leftNode.setchildren(m, root.getchildren(m));
+			rightNode.setchildren(0, root.getchildren(m+1));
+			
+			root = newRoot;
 		}
 	}
 
@@ -77,34 +114,40 @@ public class MyBTree implements BTree {
 		}
 	}
 
-	// Sonderfall falls es die Wurzel ist fehlt noch 
+	// Sonderfall falls es die Wurzel ist fehlt noch
 	@Override
 	public boolean contains(Integer o) {
 		BTreeNode temp = root;
-		// while the temp Node is not null is it possible that the Integer is in the tree
+		// while the temp Node is not null is it possible that the Integer is in
+		// the tree
 		while (temp != null) {
-			// Initialize with 0 in every loop, because we have to search from the first to the last object in one node 
+			// Initialize with 0 in every loop, because we have to search from
+			// the first to the last object in one node
 			int posCounter = 0;
 			// get the right element at the first position
 			if (temp.getValue(posCounter).intValue() == o.intValue()) {
 				return true;
-				// search in the left child of the object because our value is smaller than the current value
+				// search in the left child of the object because our value is
+				// smaller than the current value
 			} else if (temp.getValue(posCounter).intValue() > o.intValue()) {
 				temp = temp.getchildren(posCounter);
 			} else {
-				// search in the same node further because our value is bigger than the current value in the node
-				while (posCounter < 2*m) {
+				// search in the same node further because our value is bigger
+				// than the current value in the node
+				while (posCounter < 2 * m) {
 					posCounter++;
 					// find it
 					if (temp.getValue(posCounter).intValue() == o.intValue()) {
 						return true;
-						// search in the left child because our value is smaller than the current value
+						// search in the left child because our value is smaller
+						// than the current value
 					} else if (temp.getValue(posCounter).intValue() > o.intValue()) {
 						temp = temp.getchildren(posCounter);
 					}
 				}
-				// value is bigger than all elements in the node we need the right child
-				if (posCounter == 2*m) {
+				// value is bigger than all elements in the node we need the
+				// right child
+				if (posCounter == 2 * m) {
 					temp = temp.getchildren(posCounter);
 				}
 			}
@@ -123,8 +166,8 @@ public class MyBTree implements BTree {
 	public int height() {
 		return height(root);
 	}
-	
-	private int height(BTreeNode node){
+
+	private int height(BTreeNode node) {
 		if (node == null)
 			return 0;
 		else {
@@ -173,7 +216,6 @@ public class MyBTree implements BTree {
 		// TODO Auto-generated method stub
 
 	}
-	
 
 	@Override
 	public void printLevelorder() {

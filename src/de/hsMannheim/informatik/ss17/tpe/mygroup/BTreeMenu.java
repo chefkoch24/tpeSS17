@@ -9,17 +9,10 @@ public class BTreeMenu {
 		tree.insert(10);
 		tree.insert(9);
 		tree.insert(5);
-		tree.insert(6);
 		tree.insert(4);
-		tree.insert(7);
-		tree.insert(8);
-		tree.insert(1);
-		tree.insert(0);
-		
-		println(tree.height());
-		println(tree.contains(10));
+		tree.insert(3);
 	}
-	//Men�
+	
 	private static void printMenu() {
 		println("1\t-> insert(Integer o)");
 		println("2\t-> insert(String filename)");
