@@ -192,6 +192,7 @@ public class MyBTree implements BTree {
 			int value = readInt(file);
 			insert(value);
 		}
+		closeInputFile(file);
 
 		return true;
 	}
@@ -265,13 +266,15 @@ public class MyBTree implements BTree {
 
 	@Override
 	public Integer getMin() {
-		// TODO Auto-generated method stub
-		return null;
+		BTreeNode node = root;
+		while(node.getchildren(0)!= null){
+			node = node.getchildren(0);
+		}
+		return node.getValue(0);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
 		return root == null;
 	}
 
@@ -283,14 +286,42 @@ public class MyBTree implements BTree {
 
 	@Override
 	public void printInorder() {
-		// TODO Auto-generated method stub
+		printInorder(root);
 
+	}
+	
+	private void printInorder(BTreeNode node){
+		if(node == null){
+			return;
+		} else {
+			int pos = 0;
+			while (pos <= node.getValuesCount()){
+				if(pos < node.getValuesCount()){
+					printInorder(node.getchildren(pos));
+					pos++;
+				}
+				printNode(node);
+				if(pos == node.getValuesCount()){
+					printInorder(node.getchildren(pos));
+				}
+			}
+		}
 	}
 
 	@Override
 	public void printPostorder() {
-		// TODO Auto-generated method stub
+		printPostorder(root);
+	}
 
+	private void printPostorder(BTreeNode node) {
+		if (node == null) {
+			return;
+		} else {
+			for (int i = 0; i <= node.getValuesCount(); i++) {
+				printPostorder(node.getchildren(i));
+			}
+			printNode(node);
+		}
 	}
 
 	@Override
@@ -301,8 +332,41 @@ public class MyBTree implements BTree {
 
 	@Override
 	public void printLevelorder() {
-		// TODO Auto-generated method stub
+		printLevelorder(root);
 
+	}
+
+	private void printLevelorder(BTreeNode node) {
+
+		if (node == null) {
+			return;
+		} else {
+			BTreeNode temp = node;
+			Queue queue = new Queue();
+			queue.enter(node);
+			while(!queue.isEmpty()){
+				temp = queue.leave();	
+				printNode(temp);
+				for (int i = 0; i < temp.getValuesCount(); i++) {
+						if(temp.getchildren(i)!= null){
+						queue.enter(temp.getchildren(i));
+					} else {
+						if(temp.getchildren(i) != null)
+						queue.enter(temp.getchildren(++i));
+					}
+				}
+			}
+		}
+
+	}
+
+	private void printNode(BTreeNode node) {
+		for (int i = 0; i < node.getValuesCount(); i++) {
+			if (node.getValue(i) != null) {
+				Integer value = node.getValue(i);
+				print(value + ", ");
+			}
+		}
 	}
 
 	@Override

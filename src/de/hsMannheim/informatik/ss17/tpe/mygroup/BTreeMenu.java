@@ -7,6 +7,13 @@ public class BTreeMenu {
 		MyBTree tree = new MyBTree(2);
 		
 		tree.insert("src/de/hsMannheim/informatik/ss17/tpe/mygroup/values.txt");
+		
+		tree.printPostorder();
+		println();
+		tree.printLevelorder();
+		println();
+		println(tree.getMin());
+		println();
 	}
 	
 	private static void printMenu() {
