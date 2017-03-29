@@ -11,27 +11,36 @@ public class MyBTree implements BTree {
 		this.m = m;
 	}
 
+	/**
+	 * Insert the given object to the tree
+	 * 
+	 * @param object
+	 *            to insert
+	 * @return false if the object is already in the node, else true
+	 * @throws GDIException
+	 *             if the object is null
+	 */
 	@Override
-	public boolean insert(Integer o) {
-		if(o == null) {
+	public boolean insert(Integer object) {
+		if (object == null) {
 			throw new GDIException("The given object is null");
 		}
-		
+
 		if (isEmpty()) {
 			root = new BTreeNode(m);
-			root.setValue(0, o);
+			root.setValue(0, object);
 			return true;
 		} else {
-			return insertRecursive(o, root);
+			return insertRecursive(object, root);
 		}
 	}
 
-	private boolean insertRecursive(Integer o, BTreeNode node) {
+	private boolean insertRecursive(Integer object, BTreeNode node) {
 		for (int i = 0; i < node.getValuesCount(); ++i) {
-			if (node.getValue(i) == null || node.getValue(i).compareTo(o) > 0) {
+			if (node.getValue(i) == null || node.getValue(i).compareTo(object) > 0) {
 				if (node.getchildren(i) == null) {
 					// we can just add it to the node
-					insertToNode(o, node, i);
+					insertToNode(object, node, i);
 
 					if (isNodeBursted(node)) {
 						split(node);
@@ -40,9 +49,9 @@ public class MyBTree implements BTree {
 					return true;
 				} else {
 					// there is an deeper node
-					return insertRecursive(o, node.getchildren(i));
+					return insertRecursive(object, node.getchildren(i));
 				}
-			} else if (node.getValue(i).equals(o)) {
+			} else if (node.getValue(i).equals(object)) {
 				// the same object is already in the tree
 				return false;
 			}
@@ -56,11 +65,11 @@ public class MyBTree implements BTree {
 		return node.getValue(node.getValuesCount() - 1) != null;
 	}
 
-	private void insertToNode(Integer o, BTreeNode node, int pos) {
+	private void insertToNode(Integer object, BTreeNode node, int pos) {
 		// is an object already on this position?
 		if (node.getValue(pos) == null) {
 			// we can just add it to the given position
-			node.setValue(pos, o);
+			node.setValue(pos, object);
 		} else {
 			// jump to the second last position and move all values than bigger
 			// as our object one to the right to make space for the new object
@@ -75,7 +84,7 @@ public class MyBTree implements BTree {
 				}
 			}
 			// set the object to the right position
-			node.setValue(pos, o);
+			node.setValue(pos, object);
 		}
 	}
 
@@ -149,7 +158,7 @@ public class MyBTree implements BTree {
 			} else {
 				// we have to search also children of the children of the node
 				BTreeNode motherNode = findMotherNode(node.getchildren(i), children);
-				
+
 				// we have found the mother node
 				if (motherNode != null) {
 					return motherNode;
@@ -161,21 +170,30 @@ public class MyBTree implements BTree {
 		return null;
 	}
 
+	/**
+	 * Insert all values from the file to the tree
+	 * 
+	 * @param filename
+	 *            of the file
+	 * @return false if the file not exists, else true
+	 */
 	@Override
 	public boolean insert(String filename) {
 		// check if the file exist if not there is nothing to insert
 		if (!isFilePresent(filename)) {
 			// file not exist
 			return false;
-		} else {
-			Object file = openInputFile(filename);
-			// insert all integer from the file in the current tree
-			while (isEndOfInputFile(file) == false) {
-				int value = readInt(file);
-				insert(value);
-			}
-			return true;
 		}
+
+		Object file = openInputFile(filename);
+
+		// insert all values from the file in the current tree
+		while (!isEndOfInputFile(file)) {
+			int value = readInt(file);
+			insert(value);
+		}
+
+		return true;
 	}
 
 	// Sonderfall falls es die Wurzel ist fehlt noch
