@@ -48,4 +48,8 @@ public class BTreeNode {
 	public int getValuesCount() {
 		return values.length;
 	}
+	
+	public int getChildrenCount() {
+		return children.length;
+	}
 }

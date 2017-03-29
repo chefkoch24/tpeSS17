@@ -6,11 +6,23 @@ public class BTreeMenu {
 	public static void main(String[] args) {
 		MyBTree tree = new MyBTree(2);
 		
+		tree.insert(50);
+		tree.insert(100);
+		tree.insert(25);
+		tree.insert(20);
+		tree.insert(15);
 		tree.insert(10);
-		tree.insert(9);
 		tree.insert(5);
-		tree.insert(4);
-		tree.insert(3);
+		tree.insert(1);
+		tree.insert(125);
+		tree.insert(150);
+		tree.insert(175);
+		tree.insert(55);
+		tree.insert(60);
+		tree.insert(65);
+		tree.insert(6);
+		tree.insert(7);
+		tree.insert(8);
 	}
 	
 	private static void printMenu() {

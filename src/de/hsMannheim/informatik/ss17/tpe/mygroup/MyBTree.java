@@ -13,6 +13,10 @@ public class MyBTree implements BTree {
 
 	@Override
 	public boolean insert(Integer o) {
+		if(o == null) {
+			throw new GDIException("The given object is null");
+		}
+		
 		if (isEmpty()) {
 			root = new BTreeNode(m);
 			root.setValue(0, o);
@@ -29,7 +33,7 @@ public class MyBTree implements BTree {
 					// we can just add it to the node
 					insertToNode(o, node, i);
 
-					if (node.getValue(node.getValuesCount() - 1) != null) {
+					if (isNodeBursted(node)) {
 						split(node);
 					}
 
@@ -44,7 +48,12 @@ public class MyBTree implements BTree {
 			}
 		}
 
-		throw new GDIException("The node is full, there is someting wrong in the logic of the program");
+		throw new GDIException("The node is full, there is someting wrong on the logic");
+	}
+
+	private boolean isNodeBursted(BTreeNode node) {
+		// if the node has an object on 2m+1 the node is bursted
+		return node.getValue(node.getValuesCount() - 1) != null;
 	}
 
 	private void insertToNode(Integer o, BTreeNode node, int pos) {
@@ -58,9 +67,10 @@ public class MyBTree implements BTree {
 			for (int i = node.getValuesCount() - 2; i >= pos; --i) {
 				node.setValue(i + 1, node.getValue(i));
 				node.setchildren(i + 2, node.getchildren(i + 1));
-				
-				if(i == 0) {
-					// the first children has to be moved manually
+
+				if (i == 0) {
+					// the first children has to be moved also if the inserted
+					// value is the smallest in the node
 					node.setchildren(1, node.getchildren(1));
 				}
 			}
@@ -70,31 +80,85 @@ public class MyBTree implements BTree {
 	}
 
 	private void split(BTreeNode node) {
-		if(node == root) {
+		BTreeNode leftNode = new BTreeNode(m);
+		BTreeNode rightNode = new BTreeNode(m);
+
+		if (node == root) {
 			BTreeNode newRoot = new BTreeNode(m);
-			BTreeNode leftNode = new BTreeNode(m);
-			BTreeNode rightNode = new BTreeNode(m);
-			
+
 			// add the object in the middle to the new root
 			newRoot.setValue(0, root.getValue(m));
-		
+
 			newRoot.setchildren(0, leftNode);
 			newRoot.setchildren(1, rightNode);
-		
-			// split the objects from the root into two new nodes
-			for(int i = 0; i < m; ++i) {
-				leftNode.setValue(i, root.getValue(i));
-				leftNode.setchildren(i, root.getchildren(i));
-				rightNode.setValue(i, root.getValue(m+1+i));
-				rightNode.setchildren(i, root.getchildren(m+2+i));
-			}
-			
-			// the children m and m+1 are between the object for the new root
-			leftNode.setchildren(m, root.getchildren(m));
-			rightNode.setchildren(0, root.getchildren(m+1));
-			
+
+			// split the root objects into two new nodes
+			splitIntoNodes(node, leftNode, rightNode);
+
 			root = newRoot;
+		} else {
+			BTreeNode motherNode = findMotherNode(root, node);
+
+			if (motherNode == null) {
+				throw new GDIException("no mother node found");
+			}
+
+			// find the right position to insert the object in the middle
+			for (int i = 0; i < motherNode.getValuesCount(); ++i) {
+				if (motherNode.getchildren(i) == node) {
+					insertToNode(node.getValue(m), motherNode, i);
+					motherNode.setchildren(i, leftNode);
+					motherNode.setchildren(i + 1, rightNode);
+				}
+			}
+
+			// split the root objects into two new nodes
+			splitIntoNodes(node, leftNode, rightNode);
+
+			// we have to split again if the mother node is bursted to
+			if (isNodeBursted(motherNode)) {
+				split(motherNode);
+			}
 		}
+	}
+
+	private void splitIntoNodes(BTreeNode node, BTreeNode leftNode, BTreeNode rightNode) {
+		// split the objects from the root into two new nodes
+		for (int i = 0; i < m; ++i) {
+			leftNode.setValue(i, node.getValue(i));
+			leftNode.setchildren(i, node.getchildren(i));
+			rightNode.setValue(i, node.getValue(m + 1 + i));
+			rightNode.setchildren(i, node.getchildren(m + 2 + i));
+		}
+
+		// the children m and m+1 are between the object for the new root
+		leftNode.setchildren(m, node.getchildren(m));
+		rightNode.setchildren(0, node.getchildren(m + 1));
+	}
+
+	private BTreeNode findMotherNode(BTreeNode node, BTreeNode children) {
+		if (node == null) {
+			return null;
+		}
+
+		// search in all children of the node to identify the mother node
+		for (int i = 0; i < node.getChildrenCount(); ++i) {
+			// we have found the mother node
+			if (node.getchildren(i) == children) {
+				return node;
+			} else {
+				// we have to search also children of the children of the node
+				BTreeNode motherNode = findMotherNode(node.getchildren(i), children);
+				
+				// we have found the mother node
+				if (motherNode != null) {
+					return motherNode;
+				}
+			}
+		}
+
+		// mother node not found in this branch
+		return null;
 	}
 
 	@Override
