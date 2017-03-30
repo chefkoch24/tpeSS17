@@ -239,12 +239,59 @@ public class MyBTree implements BTree {
 
 	}
 
+	// Size und die tatsächliche Anzahl der eingefügten Elemente stimmt auf zwei
+	// nicht überein das sind immer die 45 und die 50 ebenso bei der levelorder und postorder
+
+	/**
+	 * Get you the number of elements they are in the tree
+	 * 
+	 * @return int size
+	 */
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		BTreeNode node = root;
+		int size = 0;
+		// tree is empty
+		if (node == null) {
+			return size;
+		} else {
+			// Save all nodes in a queue to count all nodesizes and the sum of
+			// them are the treesize
+			Queue queue = new Queue();
+			queue.enter(node);
+			while (!queue.isEmpty()) {
+				node = queue.leave();
+				size += countElementsInNode(node);
+				for (int i = 0; i < node.getValuesCount(); i++) {
+					if (node.getchildren(i) != null) {
+						queue.enter(node.getchildren(i));
+					} else {
+						if (node.getchildren(i) != null)
+							queue.enter(node.getchildren(++i));
+					}
+				}
+			}
+		}
+		return size;
 	}
 
+	private int countElementsInNode(BTreeNode node) {
+		int elementsInNode = 0;
+		// count all elements in the node
+		for (int i = 0; i < node.getValuesCount(); i++) {
+			if (node.getValue(i) != null) {
+				elementsInNode++;
+			}
+		}
+		return elementsInNode;
+
+	}
+
+	/**
+	 * Get you the height of the tree
+	 * 
+	 * @return int height
+	 */
 	@Override
 	public int height() {
 		return height(root);
@@ -258,21 +305,72 @@ public class MyBTree implements BTree {
 		}
 	}
 
+	/**
+	 * Get you the maximal elemet in the tree
+	 * 
+	 * @return Integer
+	 */
 	@Override
 	public Integer getMax() {
-		// TODO Auto-generated method stub
-		return null;
+		BTreeNode node = root;
+		// tree is empty
+		if (node == null) {
+			throw new GDIException("Der Baum ist leer");
+		} else {
+			Integer value = 0;
+			// check if we are on a leaf of the tree
+			boolean onLeaf = false;
+			// search in every node for the biggest element an the children of
+			// it
+			for (int i = 0; i < node.getValuesCount() && onLeaf == false; i++) {
+				if (node.getValue(i) == null || i == node.getValuesCount() - 1) {
+					// node is full of element, the max is in the right node of
+					// it
+					if (node.getchildren(i) != null) {
+						node = node.getchildren(i);
+						i = 0;
+						// the node is not full of elements, we step back to get
+						// the right child
+					} else if (node.getchildren(i - 1) != null) {
+						node = node.getchildren(i - 1);
+						i = 0;
+						// on the right leaf and get the maximal element
+					} else {
+						value = node.getValue(i - 1);
+						onLeaf = true;
+
+					}
+				}
+			}
+			return value;
+		}
 	}
 
+	/**
+	 * Get you the minimal value in the tree
+	 * 
+	 * @return Integer
+	 */
 	@Override
 	public Integer getMin() {
 		BTreeNode node = root;
-		while(node.getchildren(0)!= null){
+		// empty tree
+		if (node == null) {
+			println("Der Baum ist leer");
+		}
+		// search for the value at the smallest value on the left side in the
+		// tree
+		while (node.getchildren(0) != null) {
 			node = node.getchildren(0);
 		}
 		return node.getValue(0);
 	}
 
+	/**
+	 * check if the tree is empty or not
+	 * 
+	 * @return true if the tree is empty else false
+	 */
 	@Override
 	public boolean isEmpty() {
 		return root == null;
@@ -289,22 +387,15 @@ public class MyBTree implements BTree {
 		printInorder(root);
 
 	}
-	
-	private void printInorder(BTreeNode node){
-		if(node == null){
+
+	private void printInorder(BTreeNode node) {
+		if (node == null) {
 			return;
 		} else {
-			int pos = 0;
-			while (pos <= node.getValuesCount()){
-				if(pos < node.getValuesCount()){
-					printInorder(node.getchildren(pos));
-					pos++;
-				}
-				printNode(node);
-				if(pos == node.getValuesCount()){
-					printInorder(node.getchildren(pos));
-				}
+			for (int i = 0; i <= node.getValuesCount(); i++) {
+				printPostorder(node.getchildren(i));
 			}
+			printNode(node);
 		}
 	}
 
@@ -344,15 +435,15 @@ public class MyBTree implements BTree {
 			BTreeNode temp = node;
 			Queue queue = new Queue();
 			queue.enter(node);
-			while(!queue.isEmpty()){
-				temp = queue.leave();	
+			while (!queue.isEmpty()) {
+				temp = queue.leave();
 				printNode(temp);
 				for (int i = 0; i < temp.getValuesCount(); i++) {
-						if(temp.getchildren(i)!= null){
+					if (temp.getchildren(i) != null) {
 						queue.enter(temp.getchildren(i));
 					} else {
-						if(temp.getchildren(i) != null)
-						queue.enter(temp.getchildren(++i));
+						if (temp.getchildren(i) != null)
+							queue.enter(temp.getchildren(++i));
 					}
 				}
 			}

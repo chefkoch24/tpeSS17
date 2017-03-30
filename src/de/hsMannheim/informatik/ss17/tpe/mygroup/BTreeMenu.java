@@ -12,8 +12,11 @@ public class BTreeMenu {
 		println();
 		tree.printLevelorder();
 		println();
-		println(tree.getMin());
-		println();
+		println("Min " + tree.getMin());
+		println("Height " + tree.height());
+		println("Max " + tree.getMax());
+		println("Size " + tree.size());
+
 	}
 	
 	private static void printMenu() {
