@@ -170,6 +170,7 @@ public class MyBTree implements BTree {
 		return null;
 	}
 
+	//Funktioniert
 	/**
 	 * Insert all values from the file to the tree
 	 * 
@@ -197,7 +198,7 @@ public class MyBTree implements BTree {
 		return true;
 	}
 
-	// Sonderfall falls es die Wurzel ist fehlt noch
+	//Funktioniert nicht
 	@Override
 	public boolean contains(Integer o) {
 		BTreeNode temp = root;
@@ -239,8 +240,7 @@ public class MyBTree implements BTree {
 
 	}
 
-	// Size und die tatsächliche Anzahl der eingefügten Elemente stimmt auf zwei
-	// nicht überein das sind immer die 45 und die 50 ebenso bei der levelorder und postorder
+	// Funktioniert wenn Baum richtig definiert ist kann man noch rekursiv lösen
 
 	/**
 	 * Get you the number of elements they are in the tree
@@ -287,6 +287,7 @@ public class MyBTree implements BTree {
 
 	}
 
+	// Funktioniert
 	/**
 	 * Get you the height of the tree
 	 * 
@@ -305,6 +306,7 @@ public class MyBTree implements BTree {
 		}
 	}
 
+	// Funktioniert
 	/**
 	 * Get you the maximal elemet in the tree
 	 * 
@@ -346,6 +348,7 @@ public class MyBTree implements BTree {
 		}
 	}
 
+	// Funktioniert
 	/**
 	 * Get you the minimal value in the tree
 	 * 
@@ -366,6 +369,7 @@ public class MyBTree implements BTree {
 		return node.getValue(0);
 	}
 
+	// Funktioniert
 	/**
 	 * check if the tree is empty or not
 	 * 
@@ -399,6 +403,7 @@ public class MyBTree implements BTree {
 		}
 	}
 
+	// Funktioniert wenn Baum richtig definiert ist
 	@Override
 	public void printPostorder() {
 		printPostorder(root);
@@ -421,6 +426,7 @@ public class MyBTree implements BTree {
 
 	}
 
+	// Funktioniert wenn Baum richtig definiert ist
 	@Override
 	public void printLevelorder() {
 		printLevelorder(root);
