@@ -1,12 +1,13 @@
-package de.hsMannheim.informatik.ss17.tpe.mygroup;
+package de.hsMannheim.informatik.ss17.tpe.mygroup.queue;
 
+import de.hsMannheim.informatik.ss17.tpe.mygroup.BTreeNode;
 import gdi.MakeItSimple.*;
 
 public class Queue {
 
-	static ListNode head;
+	static QueueNode head;
 
-	Queue() {
+	public Queue() {
 		head = null;
 	}
 
@@ -17,14 +18,14 @@ public class Queue {
 	 * @return value of the inserted element
 	 */
 	public void enter(BTreeNode e) {
-		ListNode element = new ListNode();
+		QueueNode element = new QueueNode();
 		if(e != null){
 			element.setValue(e);
 		}else{
 			return;
 		}
 		element.setNext(null);
-		ListNode temp = head;
+		QueueNode temp = head;
 		while (temp != null && temp.getNext() != null) {
 			temp = temp.getNext();
 		}
@@ -47,7 +48,7 @@ public class Queue {
 		if (head == null)
 			throw new GDIException("Die Schlange enthält keine Elemente");
 		// get the second element to connect it with the head
-		ListNode temp = head;
+		QueueNode temp = head;
 		// save the value of the element that will be deleted
 		BTreeNode value = temp.getElement();
 		temp = temp.getNext();	
@@ -101,7 +102,7 @@ public class Queue {
 		// create a empty string
 		String printQueue = "";
 		// create an list node to get all element values 
-		ListNode temp = head;
+		QueueNode temp = head;
 		// print the queue from the first to the last element
 		while (temp != null) {
 			printQueue = printQueue + temp.getElement() + ", ";
@@ -113,7 +114,7 @@ public class Queue {
 	public int size() {
 
 		int size = 0;
-		ListNode temp = head;
+		QueueNode temp = head;
 		if(head == null){
 			return 0;
 		}

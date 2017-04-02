@@ -1,9 +1,11 @@
-package de.hsMannheim.informatik.ss17.tpe.mygroup;
+package de.hsMannheim.informatik.ss17.tpe.mygroup.queue;
 
-public class ListNode {
+import de.hsMannheim.informatik.ss17.tpe.mygroup.BTreeNode;
+
+public class QueueNode {
 	
 	private BTreeNode element;
-	private ListNode next;
+	private QueueNode next;
 
 	/**
 	 * @return the value of the current node
@@ -22,14 +24,14 @@ public class ListNode {
 	/**
 	 * @return the next element
 	 */
-	public ListNode getNext() {
+	public QueueNode getNext() {
 		return next;
 	}
 
 	/**
 	 * @param next the new next element
 	 */
-	public void setNext(ListNode next) {
+	public void setNext(QueueNode next) {
 		this.next = next;
 	}
 

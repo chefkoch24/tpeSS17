@@ -2,6 +2,8 @@ package de.hsMannheim.informatik.ss17.tpe.mygroup;
 
 import static gdi.MakeItSimple.*;
 
+import de.hsMannheim.informatik.ss17.tpe.mygroup.queue.*;
+
 public class MyBTree implements BTree {
 
 	private final int m;
