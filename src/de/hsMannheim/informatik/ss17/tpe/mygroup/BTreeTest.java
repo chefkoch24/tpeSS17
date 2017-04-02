@@ -292,4 +292,9 @@ public class BTreeTest {
 		assertEquals(true, list.contains(2));
 		assertEquals(true, list.contains(3));
 	}
+	
+	@Test
+	public final void cloneTest() {
+		//TODO
+	}
 }

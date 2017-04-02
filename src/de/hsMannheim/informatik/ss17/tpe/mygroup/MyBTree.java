@@ -10,7 +10,17 @@ public class MyBTree implements BTree {
 	private final int m;
 	private BTreeNode root;
 
+	/**
+	 * @param m
+	 *            is the order of the tree
+	 * @throws GDIException
+	 *             if m is not a natural value
+	 */
 	public MyBTree(int m) {
+		if (m < 1) {
+			throw new GDIException("m is not a natural number");
+		}
+
 		this.m = m;
 	}
 
@@ -503,8 +513,22 @@ public class MyBTree implements BTree {
 
 	}
 
+	/**
+	 * Return a deep copy of the tree
+	 * 
+	 * @return BTree a copy of the tree
+	 */
 	@Override
 	public BTree clone() {
-		return this;
+		MyLinkedList objects = getAllElements();
+
+		MyBTree tree = new MyBTree(m);
+
+		for (int i = 0; i < objects.size(); ++i) {
+			// insert all objects as an deep copy
+			tree.insert(new Integer(objects.get(i).intValue()));
+		}
+
+		return tree;
 	}
 }
