@@ -2,6 +2,7 @@ package de.hsMannheim.informatik.ss17.tpe.mygroup;
 
 import static gdi.MakeItSimple.*;
 
+import de.hsMannheim.informatik.ss17.tpe.mygroup.list.MyLinkedList;
 import de.hsMannheim.informatik.ss17.tpe.mygroup.queue.*;
 
 public class MyBTree implements BTree {
@@ -373,10 +374,19 @@ public class MyBTree implements BTree {
 		return root == null;
 	}
 
+	/**
+	 * Insert all objects of the given tree to the tree as an shallow copy
+	 * 
+	 * @param otherTree
+	 *            with the object to insert
+	 */
 	@Override
 	public void addAll(BTree otherTree) {
-		// TODO Auto-generated method stub
+		MyLinkedList objects = otherTree.getAllElements();
 
+		for (int i = 0; i < objects.size(); ++i) {
+			insert(objects.get(i));
+		}
 	}
 
 	@Override
@@ -458,15 +468,39 @@ public class MyBTree implements BTree {
 			}
 		}
 	}
-	
+
 	/**
-	 * Return all Objects in the tree in inorder
+	 * Return all Objects in the tree in a list
 	 * 
-	 * @return Integer[] all objects in the tree
+	 * @return MyLinkedList containing all objects in the tree
 	 */
 	@Override
-	public Integer[] getAllElements() {
-		return new Integer[0];
+	public MyLinkedList getAllElements() {
+		MyLinkedList list = new MyLinkedList();
+
+		// insert all objects to the list
+		getAllElementsRecursive(list, root);
+
+		return list;
+	}
+
+	private void getAllElementsRecursive(MyLinkedList list, BTreeNode node) {
+		if (node == null) {
+			return;
+		}
+
+		// add all objects to the list
+		for (int i = 0; i < node.getValuesCount(); ++i) {
+			if (node.getValue(i) != null) {
+				list.addLast(node.getValue(i));
+			}
+		}
+
+		// go one level deeper in the tree
+		for (int i = 0; i < node.getChildrenCount(); ++i) {
+			getAllElementsRecursive(list, node.getchildren(i));
+		}
+
 	}
 
 	@Override

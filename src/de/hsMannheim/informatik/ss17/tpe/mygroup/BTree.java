@@ -1,5 +1,6 @@
 package de.hsMannheim.informatik.ss17.tpe.mygroup;
 
+import de.hsMannheim.informatik.ss17.tpe.mygroup.list.MyLinkedList;
 import gdi.MakeItSimple.GDIException;
 
 public interface BTree {
@@ -67,12 +68,18 @@ public interface BTree {
 	public abstract Integer getMin();
 
 	/**
-	 * check if the tree is empty or not
+	 * Check if the tree is empty or not
 	 * 
 	 * @return true if the tree is empty else false
 	 */
 	public abstract boolean isEmpty();
 
+	/**
+	 * Insert all objects of the given tree to the tree as an shallow copy
+	 * 
+	 * @param otherTree
+	 *            with the object to insert
+	 */
 	public abstract void addAll(BTree otherTree);
 
 	public abstract void printInorder();
@@ -82,11 +89,11 @@ public interface BTree {
 	public abstract void printPreorder();
 
 	public abstract void printLevelorder();
-	
+
 	/**
-	 * Return all Objects in the tree in inorder
+	 * Return all Objects in the tree in a list
 	 * 
-	 * @return Integer[] all objects in the tree
+	 * @return LinkedList containing all objects in the tree
 	 */
-	public abstract Integer[] getAllElements();
+	public abstract MyLinkedList getAllElements();
 }

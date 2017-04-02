@@ -4,7 +4,7 @@ package de.hsMannheim.informatik.ss17.tpe.mygroup.list;
  * The class ListNode is a helper class for every kind of LinkedLists
  * 
  */
-public class ListNode {
+class ListNode {
 
 	private Integer element;
 	private ListNode next;

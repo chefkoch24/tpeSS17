@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import de.hsMannheim.informatik.ss17.tpe.mygroup.list.*;
+
 public class BTreeTest {
 	@Test
 	public final void contains() {
@@ -156,27 +158,27 @@ public class BTreeTest {
 
 		assertEquals(new Integer(1050), tree.getMax());
 	}
-	
+
 	@Test(expected = GDIException.class)
 	public final void getMinException() {
 		MyBTree tree = new MyBTree(1);
 
 		tree.getMin();
 	}
-	
+
 	@Test
 	public final void getMin() {
 		MyBTree tree = new MyBTree(2);
-		
+
 		tree.insert(50);
-		
+
 		assertEquals(new Integer(50), tree.getMin());
-		
+
 		tree.insert(100);
 		tree.insert(40);
-		
+
 		assertEquals(new Integer(40), tree.getMin());
-		
+
 		tree.insert(24);
 		tree.insert(15);
 		tree.insert(43);
@@ -189,18 +191,105 @@ public class BTreeTest {
 		tree.insert(2);
 		tree.insert(1);
 		tree.insert(700);
-		
+
 		assertEquals(new Integer(1), tree.getMin());
 	}
-	
+
 	@Test
 	public final void isEmpty() {
 		MyBTree tree = new MyBTree(1);
-		
+
 		assertEquals(true, tree.isEmpty());
-		
+
 		tree.insert(12);
-		
+
 		assertEquals(false, tree.isEmpty());
+	}
+
+	@Test
+	public final void addAll() {
+		MyBTree firstTree = new MyBTree(2);
+		MyBTree secondTree = new MyBTree(1);
+
+		firstTree.addAll(secondTree);
+
+		assertEquals(true, firstTree.isEmpty());
+
+		secondTree.insert(12);
+		secondTree.insert(20);
+		secondTree.insert(2);
+		secondTree.insert(3);
+		secondTree.insert(5);
+		secondTree.insert(6);
+		secondTree.insert(10);
+		secondTree.insert(13);
+		secondTree.insert(17);
+
+		firstTree.addAll(secondTree);
+
+		assertEquals(firstTree.size(), secondTree.size());
+		assertEquals(true, firstTree.contains(12));
+		assertEquals(true, firstTree.contains(20));
+		assertEquals(true, firstTree.contains(2));
+		assertEquals(true, firstTree.contains(3));
+		assertEquals(true, firstTree.contains(5));
+		assertEquals(true, firstTree.contains(6));
+		assertEquals(true, firstTree.contains(10));
+		assertEquals(true, firstTree.contains(13));
+		assertEquals(true, firstTree.contains(17));
+
+		secondTree.addAll(firstTree);
+
+		assertEquals(firstTree.size(), secondTree.size());
+
+		MyBTree otherTree = new MyBTree(1);
+
+		otherTree.insert(100);
+		otherTree.insert(200);
+		otherTree.insert(300);
+
+		otherTree.addAll(secondTree);
+
+		assertEquals(otherTree.size(), secondTree.size() + 3);
+	}
+
+	@Test
+	public final void getAllElements() {
+		MyBTree tree = new MyBTree(1);
+
+		LinkedList list = tree.getAllElements();
+
+		assertEquals(true, list.isEmpty());
+
+		tree.insert(5);
+		tree.insert(10);
+		tree.insert(15);
+		tree.insert(2);
+		tree.insert(20);
+		tree.insert(22);
+		tree.insert(50);
+		tree.insert(55);
+		tree.insert(14);
+		tree.insert(13);
+		tree.insert(1);
+		tree.insert(2);
+		tree.insert(3);
+
+		list = tree.getAllElements();
+
+		assertEquals(tree.size(), list.size());
+		assertEquals(true, list.contains(5));
+		assertEquals(true, list.contains(10));
+		assertEquals(true, list.contains(15));
+		assertEquals(true, list.contains(2));
+		assertEquals(true, list.contains(20));
+		assertEquals(true, list.contains(22));
+		assertEquals(true, list.contains(50));
+		assertEquals(true, list.contains(55));
+		assertEquals(true, list.contains(14));
+		assertEquals(true, list.contains(13));
+		assertEquals(true, list.contains(1));
+		assertEquals(true, list.contains(2));
+		assertEquals(true, list.contains(3));
 	}
 }
