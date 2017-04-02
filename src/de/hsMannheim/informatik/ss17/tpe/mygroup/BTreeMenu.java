@@ -4,7 +4,7 @@ import static gdi.MakeItSimple.*;
 
 public class BTreeMenu {
 	public static void main(String[] args) {
-		MyBTree tree = new MyBTree(2);
+		MyBTree tree = new MyBTree(1);
 		
 		tree.insert("src/de/hsMannheim/informatik/ss17/tpe/mygroup/values.txt");
 		

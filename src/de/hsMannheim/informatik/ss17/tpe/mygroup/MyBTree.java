@@ -137,7 +137,7 @@ public class MyBTree implements BTree {
 			leftNode.setValue(i, node.getValue(i));
 			leftNode.setchildren(i, node.getchildren(i));
 			rightNode.setValue(i, node.getValue(m + 1 + i));
-			rightNode.setchildren(i+1, node.getchildren(m + 2 + i));
+			rightNode.setchildren(i + 1, node.getchildren(m + 2 + i));
 		}
 
 		// the children m and m+1 are between the object for the new root
@@ -170,7 +170,6 @@ public class MyBTree implements BTree {
 		return null;
 	}
 
-	//Funktioniert
 	/**
 	 * Insert all values from the file to the tree
 	 * 
@@ -209,29 +208,28 @@ public class MyBTree implements BTree {
 	public boolean contains(Integer object) {
 		return containsRecursive(object, root);
 	}
-	
+
 	private boolean containsRecursive(Integer object, BTreeNode node) {
 		// the object is not in the tree
-		if(node == null) {
+		if (node == null) {
 			return false;
 		}
-		
-		// check every value in the node until 2m - the last object in the node is null
-		for(int i = 0; i < node.getChildrenCount() - 1; ++i) {
-			// we found the object in the tree
-			if(node.getValue(i).equals(object)) {
-				return true;
-			} else if(node.getValue(i).compareTo(object) > 0) {
+
+		// check every value in the node until 2m - the last object in the node
+		// is null
+		for (int i = 0; i < node.getChildrenCount() - 1; ++i) {
+			if (node.getValue(i) == null || node.getValue(i).compareTo(object) > 0) {
 				// we have to go deeper in the tree
-				return containsRecursive(object,node.getchildren(i));
+				return containsRecursive(object, node.getchildren(i));
+			} else if (node.getValue(i).equals(object)) {
+				// we found the object in the tree
+				return true;
 			}
 		}
-		
-		// the last object is null so we have to search on link 2m
-		return containsRecursive(object, node.getchildren(2*m));
-	}
 
-	// Funktioniert wenn Baum richtig definiert ist kann man noch rekursiv lösen
+		// the last object is null so we have to search on link 2m
+		return containsRecursive(object, node.getchildren(2 * m));
+	}
 
 	/**
 	 * Get you the number of elements they are in the tree
@@ -308,7 +306,7 @@ public class MyBTree implements BTree {
 		BTreeNode node = root;
 		// tree is empty
 		if (node == null) {
-			throw new GDIException("Der Baum ist leer");
+			throw new GDIException("the tree is empty");
 		} else {
 			Integer value = 0;
 			// check if we are on a leaf of the tree
@@ -350,7 +348,7 @@ public class MyBTree implements BTree {
 		BTreeNode node = root;
 		// empty tree
 		if (node == null) {
-			println("Der Baum ist leer");
+			println("the tree is empty");
 		}
 		// search for the value at the smallest value on the left side in the
 		// tree
