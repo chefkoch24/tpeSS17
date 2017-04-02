@@ -82,4 +82,11 @@ public interface BTree {
 	public abstract void printPreorder();
 
 	public abstract void printLevelorder();
+	
+	/**
+	 * Return all Objects in the tree in inorder
+	 * 
+	 * @return Integer[] all objects in the tree
+	 */
+	public abstract Integer[] getAllElements();
 }

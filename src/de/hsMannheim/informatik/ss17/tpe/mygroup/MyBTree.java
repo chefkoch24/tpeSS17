@@ -456,6 +456,16 @@ public class MyBTree implements BTree {
 			}
 		}
 	}
+	
+	/**
+	 * Return all Objects in the tree in inorder
+	 * 
+	 * @return Integer[] all objects in the tree
+	 */
+	@Override
+	public Integer[] getAllElements() {
+		return new Integer[0];
+	}
 
 	@Override
 	public BTree clone() {
