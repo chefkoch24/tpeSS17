@@ -234,7 +234,7 @@ public class MyBTree implements BTree {
 	/**
 	 * Get you the number of elements they are in the tree
 	 * 
-	 * @return int size
+	 * @return Integer the size
 	 */
 	@Override
 	public int size() {
@@ -276,11 +276,10 @@ public class MyBTree implements BTree {
 
 	}
 
-	// Funktioniert
 	/**
 	 * Get you the height of the tree
 	 * 
-	 * @return int height
+	 * @return Integer the height
 	 */
 	@Override
 	public int height() {
@@ -295,11 +294,13 @@ public class MyBTree implements BTree {
 		}
 	}
 
-	// Funktioniert
 	/**
-	 * Get you the maximal elemet in the tree
+	 * Get you the maximal object in the tree
 	 * 
-	 * @return Integer
+	 * @return Integer maximal object
+	 * 
+	 * @throws GDIException
+	 *             if the tree is empty
 	 */
 	@Override
 	public Integer getMax() {
@@ -337,18 +338,20 @@ public class MyBTree implements BTree {
 		}
 	}
 
-	// Funktioniert
 	/**
-	 * Get you the minimal value in the tree
+	 * Get you the minimal object in the tree
 	 * 
-	 * @return Integer
+	 * @return Integer minimal object
+	 * 
+	 * @throws GDIException
+	 *             if the tree is empty
 	 */
 	@Override
 	public Integer getMin() {
 		BTreeNode node = root;
 		// empty tree
 		if (node == null) {
-			println("the tree is empty");
+			throw new GDIException("the tree is empty");
 		}
 		// search for the value at the smallest value on the left side in the
 		// tree
@@ -358,7 +361,6 @@ public class MyBTree implements BTree {
 		return node.getValue(0);
 	}
 
-	// Funktioniert
 	/**
 	 * check if the tree is empty or not
 	 * 

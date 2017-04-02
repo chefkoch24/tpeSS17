@@ -1,5 +1,7 @@
 package de.hsMannheim.informatik.ss17.tpe.mygroup;
 
+import gdi.MakeItSimple.GDIException;
+
 public interface BTree {
 	/**
 	 * Insert the given object to the tree
@@ -30,14 +32,45 @@ public interface BTree {
 	 */
 	public abstract boolean contains(Integer object);
 
+	/**
+	 * Get you the number of elements they are in the tree
+	 * 
+	 * @return Integer the size
+	 */
 	public abstract int size();
 
+	/**
+	 * Get you the height of the tree
+	 * 
+	 * @return Integer the height
+	 */
 	public abstract int height();
 
+	/**
+	 * Get you the maximal object in the tree
+	 * 
+	 * @return Integer maximal object
+	 * 
+	 * @throws GDIException
+	 *             if the tree is empty
+	 */
 	public abstract Integer getMax();
 
+	/**
+	 * Get you the minimal object in the tree
+	 * 
+	 * @return Integer minimal object
+	 * 
+	 * @throws GDIException
+	 *             if the tree is empty
+	 */
 	public abstract Integer getMin();
 
+	/**
+	 * check if the tree is empty or not
+	 * 
+	 * @return true if the tree is empty else false
+	 */
 	public abstract boolean isEmpty();
 
 	public abstract void addAll(BTree otherTree);
