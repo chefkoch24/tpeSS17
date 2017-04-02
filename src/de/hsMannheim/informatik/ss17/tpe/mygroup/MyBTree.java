@@ -198,46 +198,37 @@ public class MyBTree implements BTree {
 		return true;
 	}
 
-	//Funktioniert nicht
+	/**
+	 * Search through the complete tree to find the given object
+	 * 
+	 * @param object
+	 *            to find in the tree
+	 * @return true if the object is in the tree, else fase
+	 */
 	@Override
-	public boolean contains(Integer o) {
-		BTreeNode temp = root;
-		// while the temp Node is not null is it possible that the Integer is in
-		// the tree
-		while (temp != null) {
-			// Initialize with 0 in every loop, because we have to search from
-			// the first to the last object in one node
-			int posCounter = 0;
-			// get the right element at the first position
-			if (temp.getValue(posCounter).intValue() == o.intValue()) {
+	public boolean contains(Integer object) {
+		return containsRecursive(object, root);
+	}
+	
+	private boolean containsRecursive(Integer object, BTreeNode node) {
+		// the object is not in the tree
+		if(node == null) {
+			return false;
+		}
+		
+		// check every value in the node until 2m - the last object in the node is null
+		for(int i = 0; i < node.getChildrenCount() - 1; ++i) {
+			// we found the object in the tree
+			if(node.getValue(i).equals(object)) {
 				return true;
-				// search in the left child of the object because our value is
-				// smaller than the current value
-			} else if (temp.getValue(posCounter).intValue() > o.intValue()) {
-				temp = temp.getchildren(posCounter);
-			} else {
-				// search in the same node further because our value is bigger
-				// than the current value in the node
-				while (posCounter < 2 * m) {
-					posCounter++;
-					// find it
-					if (temp.getValue(posCounter).intValue() == o.intValue()) {
-						return true;
-						// search in the left child because our value is smaller
-						// than the current value
-					} else if (temp.getValue(posCounter).intValue() > o.intValue()) {
-						temp = temp.getchildren(posCounter);
-					}
-				}
-				// value is bigger than all elements in the node we need the
-				// right child
-				if (posCounter == 2 * m) {
-					temp = temp.getchildren(posCounter);
-				}
+			} else if(node.getValue(i).compareTo(object) > 0) {
+				// we have to go deeper in the tree
+				return containsRecursive(object,node.getchildren(i));
 			}
 		}
-		return false;
-
+		
+		// the last object is null so we have to search on link 2m
+		return containsRecursive(object, node.getchildren(2*m));
 	}
 
 	// Funktioniert wenn Baum richtig definiert ist kann man noch rekursiv lösen

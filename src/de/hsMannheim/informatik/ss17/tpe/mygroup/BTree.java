@@ -21,7 +21,14 @@ public interface BTree {
 	 */
 	public abstract boolean insert(String filename);
 
-	public abstract boolean contains(Integer o);
+	/**
+	 * Search through the complete tree to find the given object
+	 * 
+	 * @param object
+	 *            to find in the tree
+	 * @return true if the object is in the tree, else fase
+	 */
+	public abstract boolean contains(Integer object);
 
 	public abstract int size();
 
