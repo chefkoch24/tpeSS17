@@ -137,7 +137,7 @@ public class MyBTree implements BTree {
 			leftNode.setValue(i, node.getValue(i));
 			leftNode.setchildren(i, node.getchildren(i));
 			rightNode.setValue(i, node.getValue(m + 1 + i));
-			rightNode.setchildren(i, node.getchildren(m + 2 + i));
+			rightNode.setchildren(i+1, node.getchildren(m + 2 + i));
 		}
 
 		// the children m and m+1 are between the object for the new root
