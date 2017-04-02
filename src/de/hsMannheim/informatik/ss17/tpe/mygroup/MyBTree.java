@@ -516,10 +516,10 @@ public class MyBTree implements BTree {
 	/**
 	 * Return a deep copy of the tree
 	 * 
-	 * @return BTree a copy of the tree
+	 * @return MyBTree a copy of the tree
 	 */
 	@Override
-	public BTree clone() {
+	public MyBTree clone() {
 		MyLinkedList objects = getAllElements();
 
 		MyBTree tree = new MyBTree(m);

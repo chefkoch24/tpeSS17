@@ -3,22 +3,31 @@ package de.hsMannheim.informatik.ss17.tpe.mygroup;
 import static gdi.MakeItSimple.*;
 
 public class BTreeMenu {
-	public static void main(String[] args) {
-		MyBTree tree = new MyBTree(1);
-		
-		tree.insert("src/de/hsMannheim/informatik/ss17/tpe/mygroup/values.txt");
-		
-		tree.printPostorder();
-		println();
-		tree.printLevelorder();
-		println();
-		println("Min " + tree.getMin());
-		println("Height " + tree.height());
-		println("Max " + tree.getMax());
-		println("Size " + tree.size());
 
+	private static MyBTree[] trees = new MyBTree[3];
+	private static MyBTree workingTree;
+	private static final String FILE_PATH = "src/de/hsMannheim/informatik/ss17/tpe/mygroup/values.txt";
+
+	public static void main(String[] args) {
+		trees[0] = new MyBTree(1);
+		trees[1] = new MyBTree(2);
+		trees[2] = new MyBTree(3);
+		workingTree = trees[0];
+
+		int input = -1;
+		while (input != 30) {
+			printMenu();
+			try {
+				input = readInt();
+				executeCommand(input);
+			} catch (GDIException ex) {
+				println(ex.getMessage());
+				readLine();
+				input = -1;
+			}
+		}
 	}
-	
+
 	private static void printMenu() {
 		println("1\t-> insert(Integer o)");
 		println("2\t-> insert(String filename)");
@@ -34,6 +43,68 @@ public class BTreeMenu {
 		println("12\t-> printPreorder()");
 		println("13\t-> printLevelorder()");
 		println("14\t-> clone()");
+		println("15\t-> change tree");
 		println("30\t-> exit");
+	}
+
+	private static void executeCommand(int cmd) {
+		switch (cmd) {
+		case 1:
+			print("value: ");
+			print(workingTree.insert(readInt()));
+			break;
+		case 2:
+			print(workingTree.insert(FILE_PATH));
+			break;
+		case 3:
+			print("value to search: ");
+			print(workingTree.contains(readInt()));
+			break;
+		case 4:
+			print(workingTree.size());
+			break;
+		case 5:
+			print(workingTree.height());
+			break;
+		case 6:
+			print(workingTree.getMax());
+			break;
+		case 7:
+			print(workingTree.getMin());
+			break;
+		case 8:
+			print(workingTree.isEmpty());
+			break;
+		case 9:
+			print("Index of the tree to add: ");
+			workingTree.addAll(trees[readInt()]);
+			break;
+		case 10:
+			workingTree.printInorder();
+			break;
+		case 11:
+			workingTree.printPostorder();
+			break;
+		case 12:
+			workingTree.printPreorder();
+			break;
+		case 13:
+			workingTree.printLevelorder();
+			break;
+		case 14:
+			print("index to clone: ");
+			trees[readInt()] = workingTree.clone();
+			break;
+		case 15:
+			print("index: ");
+			workingTree = trees[readInt()];
+			break;
+		case 30: // exit the program
+			break;
+		default:
+			println("unknown command");
+		}
+		readLine();
+		readLine();
 	}
 }
