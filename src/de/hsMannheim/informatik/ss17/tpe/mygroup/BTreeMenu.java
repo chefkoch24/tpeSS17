@@ -13,7 +13,7 @@ public class BTreeMenu {
 		trees[1] = new MyBTree(2);
 		trees[2] = new MyBTree(3);
 		workingTree = trees[0];
-
+		
 		int input = -1;
 		while (input != 30) {
 			printMenu();

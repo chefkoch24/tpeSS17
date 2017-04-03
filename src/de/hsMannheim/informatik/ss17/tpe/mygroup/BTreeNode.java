@@ -8,9 +8,9 @@ public class BTreeNode {
 	
 	private BTreeNode[] children;
 	
-	public BTreeNode(int m) {
-		values = new Integer[m*2+1];
-		children = new BTreeNode[m*2+2];
+	public BTreeNode(int degree) {
+		values = new Integer[degree*2+1];
+		children = new BTreeNode[degree*2+2];
 	}
 	
 	public Integer getValue(int pos) {
@@ -21,7 +21,7 @@ public class BTreeNode {
 		return values[pos];
 	}
 	
-	public BTreeNode getchildren(int pos) {
+	public BTreeNode getChildren(int pos) {
 		if(pos < 0 || pos > children.length - 1) {
 			throw new GDIException("pos out of range");
 		}
