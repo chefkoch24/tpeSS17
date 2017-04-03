@@ -20,7 +20,7 @@ public class BTreeMenu {
 			try {
 				input = readInt();
 				executeCommand(input);
-			} catch (GDIException ex) {
+			} catch (Exception ex) {
 				println(ex.getMessage());
 				readLine();
 				input = -1;
