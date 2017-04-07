@@ -1,7 +1,6 @@
 package de.hsMannheim.informatik.ss17.tpe.mygroup;
 
 import static gdi.MakeItSimple.*;
-
 import de.hsMannheim.informatik.ss17.tpe.mygroup.list.*;
 import de.hsMannheim.informatik.ss17.tpe.mygroup.queue.*;
 
@@ -10,12 +9,6 @@ public class MyBTree implements BTree {
 	private final int degree;
 	private BTreeNode root;
 
-	/**
-	 * @param m
-	 *            is the order of the tree
-	 * @throws GDIException
-	 *             if m is not a natural value
-	 */
 	public MyBTree(int degree) {
 		if (degree < 1) {
 			throw new GDIException("m is not a natural number");
@@ -24,15 +17,6 @@ public class MyBTree implements BTree {
 		this.degree = degree;
 	}
 
-	/**
-	 * Insert the given object to the tree
-	 * 
-	 * @param object
-	 *            to insert
-	 * @return false if the object is already in the node, else true
-	 * @throws GDIException
-	 *             if the object is null
-	 */
 	@Override
 	public boolean insert(Integer object) {
 		if (object == null) {
@@ -183,13 +167,6 @@ public class MyBTree implements BTree {
 		return null;
 	}
 
-	/**
-	 * Insert all values from the file to the tree
-	 * 
-	 * @param filename
-	 *            of the file
-	 * @return false if the file not exists, else true
-	 */
 	@Override
 	public boolean insert(String filename) {
 		// check if the file exist if not there is nothing to insert
@@ -210,13 +187,6 @@ public class MyBTree implements BTree {
 		return true;
 	}
 
-	/**
-	 * Search through the complete tree to find the given object
-	 * 
-	 * @param object
-	 *            to find in the tree
-	 * @return true if the object is in the tree, else fase
-	 */
 	@Override
 	public boolean contains(Integer object) {
 		return containsRecursive(object, root);
@@ -244,11 +214,6 @@ public class MyBTree implements BTree {
 		return containsRecursive(object, node.getChildren(2 * degree));
 	}
 
-	/**
-	 * Get you the number of elements they are in the tree
-	 * 
-	 * @return Integer the size
-	 */
 	@Override
 	public int size() {
 		BTreeNode node = root;
@@ -289,11 +254,6 @@ public class MyBTree implements BTree {
 
 	}
 
-	/**
-	 * Get you the height of the tree
-	 * 
-	 * @return Integer the height
-	 */
 	@Override
 	public int height() {
 		return height(root);
@@ -307,14 +267,6 @@ public class MyBTree implements BTree {
 		}
 	}
 
-	/**
-	 * Get you the maximal object in the tree
-	 * 
-	 * @return Integer maximal object
-	 * 
-	 * @throws GDIException
-	 *             if the tree is empty
-	 */
 	@Override
 	public Integer getMax() {
 		BTreeNode node = root;
@@ -351,14 +303,6 @@ public class MyBTree implements BTree {
 		}
 	}
 
-	/**
-	 * Get you the minimal object in the tree
-	 * 
-	 * @return Integer minimal object
-	 * 
-	 * @throws GDIException
-	 *             if the tree is empty
-	 */
 	@Override
 	public Integer getMin() {
 		BTreeNode node = root;
@@ -366,30 +310,18 @@ public class MyBTree implements BTree {
 		if (node == null) {
 			throw new GDIException("the tree is empty");
 		}
-		// search for the value at the smallest value on the left side in the
-		// tree
+		// search for the value at the smallest value on the left side in the tree
 		while (node.getChildren(0) != null) {
 			node = node.getChildren(0);
 		}
 		return node.getValue(0);
 	}
 
-	/**
-	 * check if the tree is empty or not
-	 * 
-	 * @return true if the tree is empty else false
-	 */
 	@Override
 	public boolean isEmpty() {
 		return root == null;
 	}
 
-	/**
-	 * Insert all objects of the given tree to the tree as an shallow copy
-	 * 
-	 * @param otherTree
-	 *            with the object to insert
-	 */
 	@Override
 	public void addAll(BTree otherTree) {
 		MyLinkedList objects = otherTree.getAllElements();
@@ -399,9 +331,6 @@ public class MyBTree implements BTree {
 		}
 	}
 
-	/**
-	 * Print the B-Tree: left, node, right
-	 */
 	@Override
 	public void printInorder() {
 		printInorder(root);
@@ -413,41 +342,40 @@ public class MyBTree implements BTree {
 			return;
 		} else {
 			for (int i = 0; i < node.getValuesCount(); i++) {
+				// get the children of one element
 				if(node.getChildren(i) != null)
-				printInorder(node.getChildren(i));
-				if(node.getValue(i) != null)
-				print(node.getValue(i) + ", ");
+					printInorder(node.getChildren(i));
+				// get the element
+				if(node.getValue(i) != null){
+					print(node.getValue(i) + ", ");
+				}
+					
 			}
 		}
 	}
 	
-	/**
-	 * Print the B-Tree: left, right, node
-	 */
+	
 	@Override
 	public void printPostorder() {
 		printPostorder(root);
 	}
-
 	private void printPostorder(BTreeNode node) {
 		if (node == null) {
 			return;
 		} else {
 			for(int i = 0; i < node.getValuesCount(); i++){
+				// get the children
 				if(node.getChildren(i) != null)
 					printPostorder(node.getChildren(i));
 			}
+			// get the full node
 			printNode(node);
 		}
 	}
 
-	/**
-	 * Print the B-Tree: node, left, right
-	 */
 	@Override
 	public void printPreorder() {
 		printPreorder(root);
-
 	}
 	
 	private void printPreorder(BTreeNode node){
@@ -456,16 +384,13 @@ public class MyBTree implements BTree {
 		} else {
 			for(int i = 0; i < node.getValuesCount(); i++){
 				if(node.getValue(i) != null)
-				print(node.getValue(i) + ", ");
+					print(node.getValue(i) + ", ");
 				if(node.getChildren(i) != null)
-				printPreorder(node.getChildren(i));
+					printPreorder(node.getChildren(i));
 			}	
 		}
 	}
 
-	/**
-	 * Print the B-Tree: all nodes on the same niveau
-	 */
 	@Override
 	public void printLevelorder() {
 		printLevelorder(root);
@@ -480,14 +405,18 @@ public class MyBTree implements BTree {
 			BTreeNode temp = node;
 			Queue queue = new Queue();
 			queue.enter(node);
+			// the tree is not empty while the queue is not empty
 			while (!queue.isEmpty()) {
 				temp = queue.leave();
+				// print the current node
 				printNode(temp);
 				for (int i = 0; i < temp.getValuesCount(); i++) {
+					// get the children 
 					if (temp.getChildren(i) != null) {
 						queue.enter(temp.getChildren(i));
 					} else {
 						if (temp.getChildren(i) != null)
+							// enter the right child of the node
 							queue.enter(temp.getChildren(++i));
 					}
 				}
@@ -496,20 +425,24 @@ public class MyBTree implements BTree {
 
 	}
 
+	// print the full Node
 	private void printNode(BTreeNode node) {
 		for (int i = 0; i < node.getValuesCount(); i++) {
+			// mark the beginning of an node
+			if(i == 0)
+				print("(");
 			if (node.getValue(i) != null) {
 				Integer value = node.getValue(i);
-				print(value + ", ");
+				print(value);
+				if(node.getValue(i+1) != null)
+					print(" ,");
 			}
+			// mark the end of an node
+			if(i == node.getValuesCount()-1)
+				print(")");
 		}
 	}
 
-	/**
-	 * Return all Objects in the tree in a list
-	 * 
-	 * @return MyLinkedList containing all objects in the tree
-	 */
 	@Override
 	public MyLinkedList getAllElements() {
 		MyLinkedList list = new MyLinkedList();

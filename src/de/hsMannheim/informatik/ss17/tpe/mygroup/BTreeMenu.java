@@ -9,11 +9,12 @@ public class BTreeMenu {
 	private static final String FILE_PATH = "src/de/hsMannheim/informatik/ss17/tpe/mygroup/values.txt";
 
 	public static void main(String[] args) {
+		// Initalize BTree array
 		trees[0] = new MyBTree(1);
 		trees[1] = new MyBTree(2);
 		trees[2] = new MyBTree(3);
 		workingTree = trees[0];
-		
+
 		int input = -1;
 		while (input != 30) {
 			printMenu();
@@ -93,7 +94,11 @@ public class BTreeMenu {
 			break;
 		case 14:
 			print("index to clone: ");
-			trees[readInt()] = workingTree.clone();
+			int index = readInt();
+			if(index > 0 && index < 3)
+				trees[index] = workingTree.clone();
+			else
+				print("other index");
 			break;
 		case 15:
 			print("index: ");

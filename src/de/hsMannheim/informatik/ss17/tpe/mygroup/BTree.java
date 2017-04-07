@@ -82,12 +82,24 @@ public interface BTree {
 	 */
 	public abstract void addAll(BTree otherTree);
 
+	/**
+	 * Print the B-Tree: left, node, right
+	 */
 	public abstract void printInorder();
 
+	/**
+	 * Print the B-Tree: left, right, node
+	 */
 	public abstract void printPostorder();
 
+	/**
+	 * Print the B-Tree: node, left, right
+	 */
 	public abstract void printPreorder();
 
+	/**
+	 * Print the B-Tree: all nodes on the same niveau
+	 */
 	public abstract void printLevelorder();
 
 	/**

@@ -2,18 +2,19 @@ package de.hsMannheim.informatik.ss17.tpe.mygroup;
 
 import static gdi.MakeItSimple.*;
 import static org.junit.Assert.*;
-
-import org.junit.Test;
-
+import org.junit.*;
 import de.hsMannheim.informatik.ss17.tpe.mygroup.list.*;
 
 public class BTreeTest {
-	@Test
-	public final void contains() {
-		MyBTree tree = new MyBTree(1);
+	
+	BTree tree;
+	BTree emptyTree;
 
-		assertEquals(false, tree.contains(-2));
-
+	@Before
+	public void setUp(){
+		tree = new MyBTree(2);
+		emptyTree = new MyBTree(1);
+		
 		tree.insert(5);
 		tree.insert(10);
 		tree.insert(4);
@@ -32,6 +33,12 @@ public class BTreeTest {
 		tree.insert(12);
 		tree.insert(77);
 		tree.insert(137);
+	}
+	
+	@Test
+	public final void contains() {
+
+		assertEquals(false, tree.contains(-2));
 
 		assertEquals(true, tree.contains(23));
 		assertEquals(true, tree.contains(123));
@@ -41,50 +48,20 @@ public class BTreeTest {
 
 	@Test
 	public final void size() {
-		MyBTree tree = new MyBTree(1);
 
-		assertEquals(0, tree.size());
-
-		tree.insert(50);
-		tree.insert(25);
-		tree.insert(100);
-		tree.insert(75);
-		tree.insert(70);
-		tree.insert(65);
-		tree.insert(20);
-		tree.insert(21);
-		tree.insert(22);
-		tree.insert(13);
-		tree.insert(12);
-		tree.insert(11);
-		tree.insert(101);
-		tree.insert(110);
-		tree.insert(113);
-		tree.insert(114);
-		tree.insert(55);
-		tree.insert(56);
-		tree.insert(57);
-		tree.insert(58);
-
-		assertEquals(20, tree.size());
+		assertEquals(0, emptyTree.size());
+		assertNotEquals(0, tree.size());
+		assertEquals(18, tree.size());
 		assertNotEquals(12, tree.size());
 	}
 
 	@Test
 	public final void height() {
-		MyBTree tree = new MyBTree(1);
-		assertEquals(0, tree.size());
-
-		tree.insert(100);
-		tree.insert(110);
-		tree.insert(120);
-		tree.insert(150);
-		tree.insert(130);
-		tree.insert(140);
-		tree.insert(125);
-		tree.insert(160);
-
+		
+		assertEquals(0, emptyTree.height());
+		assertNotEquals(0, tree.height());
 		assertNotEquals(6, tree.height());
+		assertEquals(2, tree.height());
 
 		tree.insert(165);
 		tree.insert(161);
@@ -98,7 +75,7 @@ public class BTreeTest {
 		tree.insert(101);
 		tree.insert(102);
 
-		assertEquals(4, tree.height());
+		assertEquals(3, tree.height());
 
 		tree.insert(201);
 		tree.insert(202);
@@ -121,88 +98,51 @@ public class BTreeTest {
 		tree.insert(219);
 		tree.insert(220);
 
-		assertEquals(5, tree.height());
+		assertEquals(3, tree.height());
 	}
 
 	@Test(expected = GDIException.class)
 	public final void getMaxException() {
-		MyBTree tree = new MyBTree(1);
 
-		tree.getMax();
+		emptyTree.getMax();
 	}
 
 	@Test
 	public final void getMax() {
-		MyBTree tree = new MyBTree(2);
 
-		tree.insert(50);
+		assertEquals(new Integer(5645), tree.getMax());
 
-		assertEquals(new Integer(50), tree.getMax());
-
-		tree.insert(75);
-		tree.insert(100);
-		tree.insert(125);
+		tree.insert(6000);
+		tree.insert(99);
+		tree.insert(1250);
 		tree.insert(25);
-		tree.insert(15);
-		tree.insert(5);
-		tree.insert(35);
-		tree.insert(45);
-		tree.insert(55);
-		tree.insert(110);
 
-		assertNotEquals(new Integer(110), tree.getMax());
+		assertNotEquals(new Integer(99), tree.getMax());
 
-		tree.insert(1050);
-		tree.insert(1001);
-		tree.insert(1010);
-
-		assertEquals(new Integer(1050), tree.getMax());
+		assertEquals(new Integer(6000), tree.getMax());
 	}
 
 	@Test(expected = GDIException.class)
 	public final void getMinException() {
-		MyBTree tree = new MyBTree(1);
 
-		tree.getMin();
+		emptyTree.getMin();
 	}
 
 	@Test
 	public final void getMin() {
-		MyBTree tree = new MyBTree(2);
-
-		tree.insert(50);
-
-		assertEquals(new Integer(50), tree.getMin());
-
-		tree.insert(100);
-		tree.insert(40);
-
-		assertEquals(new Integer(40), tree.getMin());
-
-		tree.insert(24);
-		tree.insert(15);
-		tree.insert(43);
-		tree.insert(21);
-		tree.insert(12);
-		tree.insert(33);
-		tree.insert(22);
-		tree.insert(4);
-		tree.insert(3);
-		tree.insert(2);
-		tree.insert(1);
-		tree.insert(700);
 
 		assertEquals(new Integer(1), tree.getMin());
+		assertNotEquals(new Integer(40), tree.getMin());
+		tree.insert(0);
+		assertNotEquals(new Integer(1), tree.getMin());
+		assertEquals(new Integer(0), tree.getMin());
+		
 	}
 
 	@Test
 	public final void isEmpty() {
-		MyBTree tree = new MyBTree(1);
 
-		assertEquals(true, tree.isEmpty());
-
-		tree.insert(12);
-
+		assertEquals(true, emptyTree.isEmpty());
 		assertEquals(false, tree.isEmpty());
 	}
 
@@ -255,46 +195,44 @@ public class BTreeTest {
 
 	@Test
 	public final void getAllElements() {
-		MyBTree tree = new MyBTree(1);
 
-		LinkedList list = tree.getAllElements();
+		LinkedList list = emptyTree.getAllElements();
 
 		assertEquals(true, list.isEmpty());
-
-		tree.insert(5);
-		tree.insert(10);
-		tree.insert(15);
-		tree.insert(2);
-		tree.insert(20);
-		tree.insert(22);
-		tree.insert(50);
-		tree.insert(55);
-		tree.insert(14);
-		tree.insert(13);
-		tree.insert(1);
-		tree.insert(2);
-		tree.insert(3);
 
 		list = tree.getAllElements();
 
 		assertEquals(tree.size(), list.size());
-		assertEquals(true, list.contains(5));
+		assertEquals(true, list.contains(4));
 		assertEquals(true, list.contains(10));
-		assertEquals(true, list.contains(15));
-		assertEquals(true, list.contains(2));
-		assertEquals(true, list.contains(20));
-		assertEquals(true, list.contains(22));
-		assertEquals(true, list.contains(50));
-		assertEquals(true, list.contains(55));
-		assertEquals(true, list.contains(14));
-		assertEquals(true, list.contains(13));
 		assertEquals(true, list.contains(1));
-		assertEquals(true, list.contains(2));
-		assertEquals(true, list.contains(3));
+		assertEquals(true, list.contains(5645));
 	}
 	
 	@Test
 	public final void cloneTest() {
-		//TODO
+		
+		MyBTree tree = new MyBTree(2);
+		MyBTree copiedTree = new MyBTree(1);
+		copiedTree = tree.clone();
+		
+		assertEquals(true, copiedTree.isEmpty());
+		tree.insert(1000);
+		tree.insert(10);
+		tree.insert(100);
+		tree.insert(2);
+		tree.insert(5);
+		
+		copiedTree = tree.clone();
+		assertEquals(tree.size(), copiedTree.size());
+		assertEquals(tree.getMin(), copiedTree.getMin());
+		assertEquals(tree.getMax(), copiedTree.getMax());
+		assertEquals(true, tree.contains(new Integer (1000)));
+		assertEquals(true, copiedTree.contains(new Integer (1000)));
+		
+		tree.insert(47);
+		assertNotEquals(tree.size(), copiedTree.size());
+		assertEquals(false, copiedTree.contains(new Integer (47)));
+		
 	}
 }
